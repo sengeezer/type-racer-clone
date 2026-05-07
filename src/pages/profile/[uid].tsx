@@ -1,5 +1,9 @@
-import { Typography } from "@material-ui/core";
 import { useAuth } from "context/Auth";
+import styled from "styled-components";
+
+const Title = styled.h1`
+  margin: 0;
+`;
 
 const Profile = () => {
   const { user, isLoading } = useAuth();
@@ -10,7 +14,7 @@ const Profile = () => {
 
   return (
     <div>
-      <Typography variant='h4'>Hello, {user.displayName}!</Typography>
+      <Title>Hello, {user.displayName}!</Title>
     </div>
   );
 };

@@ -1,6 +1,4 @@
-import firebase from "./config";
-
-const auth = firebase.auth();
+import { getFirebaseAuth } from "./config";
 
 interface LoginProps {
   email: string;
@@ -12,14 +10,15 @@ interface RegisterProps extends LoginProps {
 }
 
 export const login = async ({ email, password }: LoginProps) =>
-  await auth.signInWithEmailAndPassword(email, password);
+  await getFirebaseAuth().signInWithEmailAndPassword(email, password);
 
 export const register = async ({ email, password, name }: RegisterProps) => {
+  const auth = getFirebaseAuth();
   await auth.createUserWithEmailAndPassword(email, password);
   await auth.currentUser?.updateProfile({ displayName: name });
 };
 
-export const loguot = async () => await auth.signOut();
+export const logout = async () => await getFirebaseAuth().signOut();
 
 // export const addStatsWps = async (userId: string, wps: number) => {
 //   const res =

@@ -1,12 +1,15 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getSong } from "api";
-import { Grid, Typography } from "@material-ui/core";
 import { RaceGame, Stats } from "components";
 import { SongData } from "types";
 import { useAuth } from "context/Auth";
 import { addToStatsWPS, getStats } from "utils";
 
 import styled from "styled-components";
+
+const MILLISECONDS_PER_SECOND = 1000;
+const SECONDS_PER_MINUTE = 60;
+const SONG_STALE_TIME_MS = MILLISECONDS_PER_SECOND * SECONDS_PER_MINUTE * 3;
 
 const Container = styled.div`
   max-width: 80rem;
@@ -18,36 +21,49 @@ const Container = styled.div`
   padding: 0 10px;
 `;
 
+const Content = styled.div`
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 const Race = () => {
-  // prettier-ignore
-  const {data, isLoading, error, refetch} = useQuery<SongData, Error>("song", getSong, {staleTime: 1000 * 60 * 3 /* 3 minutes */});
+  const { data, isLoading, error, refetch } = useQuery<SongData, Error>({
+    queryKey: ["song"],
+    queryFn: getSong,
+    staleTime: SONG_STALE_TIME_MS,
+  });
   const { user } = useAuth();
 
-  const { data: stats, refetch: statsRefetch } = useQuery<number[]>(
-    ["stats", user],
-    () => getStats(user)
-  );
+  const { data: stats, refetch: statsRefetch } = useQuery<number[]>({
+    queryKey: ["stats", user?.uid ?? null],
+    queryFn: () => getStats(user),
+    enabled: Boolean(user),
+  });
 
   if (isLoading) return <div className=''>loading...</div>;
   if (error || !data) return <div className=''>{error?.message}</div>;
 
   return (
     <Container>
-      <Grid container spacing={3}>
-        <Grid item sm={12} md={8}>
+      <Content>
+        <div>
           <RaceGame
             data={data}
             refetch={refetch}
-            addStats={(wps: number) => addToStatsWPS(user, wps)}
+            addStats={wps => addToStatsWPS(user, wps)}
             statsRefetch={statsRefetch}
           />
           <button onClick={() => statsRefetch()}>refetch</button>
-        </Grid>
-
-        <Grid item sm={12} md={4}>
+        </div>
+        <div>
           <Stats stats={stats} />
-        </Grid>
-      </Grid>
+        </div>
+      </Content>
     </Container>
   );
 };
