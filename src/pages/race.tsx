@@ -38,8 +38,10 @@ const Race = () => {
   const { user } = useAuth();
 
   const { data: stats, refetch: statsRefetch } = useQuery<number[]>({
-    queryKey: ["stats", user?.uid ?? "anonymous"],
+    queryKey: ["stats", user?.uid],
     queryFn: () => getStats(user),
+    enabled: Boolean(user),
+    initialData: [],
   });
 
   if (isLoading) return <div className=''>loading...</div>;
@@ -49,7 +51,12 @@ const Race = () => {
     <Container>
       <Content>
         <div>
-          <RaceGame data={data} refetch={refetch} addStats={wps => addToStatsWPS(user, wps)} statsRefetch={statsRefetch} />
+          <RaceGame
+            data={data}
+            refetch={refetch}
+            addStats={wps => addToStatsWPS(user, wps)}
+            statsRefetch={statsRefetch}
+          />
           <button onClick={() => statsRefetch()}>refetch</button>
         </div>
         <div>
