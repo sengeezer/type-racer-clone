@@ -36,7 +36,7 @@ const RaceGame: FC<ReactGameProps> = ({
   const enableInput = useCallback((isEnable: boolean) => {
     if (!mainInput.current) return;
     mainInput.current.disabled = !isEnable;
-    mainInput.current.placeholder = isEnable ? "" : "poczekaj na start";
+    mainInput.current.placeholder = isEnable ? "" : "wait for start";
     mainInput.current.style.backgroundColor = isEnable ? "white" : "gray";
     if (isEnable) {
       mainInput.current.focus();

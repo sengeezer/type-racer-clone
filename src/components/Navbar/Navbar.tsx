@@ -23,7 +23,7 @@ const Navbar = () => {
         {isLoading && <div>load...</div>}
         {!user && !isLoading && (
           <Link href='/auth' passHref legacyBehavior>
-            <S.ButtonLink>Sing in</S.ButtonLink>
+            <S.ButtonLink>Sign in</S.ButtonLink>
           </Link>
         )}
         {!!user && !isLoading && (

@@ -7,6 +7,8 @@ import { addToStatsWPS, getStats } from "utils";
 
 import styled from "styled-components";
 
+const SONG_STALE_TIME_MS = 1000 * 60 * 3;
+
 const Container = styled.div`
   max-width: 80rem;
   margin: 20px auto 0;
@@ -31,7 +33,7 @@ const Race = () => {
   const { data, isLoading, error, refetch } = useQuery<SongData, Error>({
     queryKey: ["song"],
     queryFn: getSong,
-    staleTime: 1000 * 60 * 3,
+    staleTime: SONG_STALE_TIME_MS,
   });
   const { user } = useAuth();
 

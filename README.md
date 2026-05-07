@@ -42,5 +42,5 @@ Also in project:
 "react": "19.2.6",
 "firebase": "^8.8.0",
 "typescript": "5.9.3",
-"styled-components": "^5.3.0"
+"styled-components": "6.4.1"
 ```
