@@ -12,12 +12,44 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASURMENT_ID,
 };
 
-try {
-  firebase.initializeApp(firebaseConfig);
-} catch (err) {
-  if (!(err instanceof Error) || !/already exists/.test(err.message)) {
-    console.error("Firebase initialization error", err);
+const requiredFirebaseConfig = [
+  firebaseConfig.apiKey,
+  firebaseConfig.authDomain,
+  firebaseConfig.projectId,
+  firebaseConfig.appId,
+];
+
+const isConfiguredValue = (value: string | undefined) =>
+  Boolean(value && !value.startsWith("<YOUR_"));
+
+export const isFirebaseConfigured = requiredFirebaseConfig.every(isConfiguredValue);
+
+export const getFirebaseApp = () => {
+  if (!isFirebaseConfigured) {
+    throw new Error("Firebase environment variables are not configured.");
   }
-}
+
+  if (!firebase.apps.length) {
+    try {
+      firebase.initializeApp(firebaseConfig);
+    } catch (err) {
+      if (!(err instanceof Error) || !/already exists/.test(err.message)) {
+        console.error("Firebase initialization error", err);
+        throw err;
+      }
+    }
+  }
+  return firebase.app();
+};
+
+export const getFirebaseAuth = () => {
+  getFirebaseApp();
+  return firebase.auth();
+};
+
+export const getFirestore = () => {
+  getFirebaseApp();
+  return firebase.firestore();
+};
 
 export default firebase;

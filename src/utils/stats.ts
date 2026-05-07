@@ -1,12 +1,11 @@
-import { firebase } from "firedb";
-
-const db = firebase.firestore();
+import { firebase, getFirestore } from "firedb";
 
 export const getStats = async (user: firebase.User | null | undefined) => {
   let data: number[] = [];
   console.log("refetching stats");
 
   if (user) {
+    const db = getFirestore();
     const statsRef = db.collection("stats").doc(user.uid);
     const doc = await statsRef.get();
     if (doc.exists) {
@@ -22,6 +21,7 @@ export const addToStatsWPS = async (
 ) => {
   if (user) {
     try {
+      const db = getFirestore();
       const statsRef = db.collection("stats").doc(user.uid);
       if ((await statsRef.get()).exists) {
         await db.runTransaction(async transaction => {

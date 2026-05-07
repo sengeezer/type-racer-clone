@@ -17,14 +17,13 @@
     "nprogress": "^0.2.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "react-firebase-hooks": "^3.0.4",
-    "styled-components": "^5.3.0"
+    "react-is": "19.2.0",
+    "styled-components": "6.4.1"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@types/styled-components": "^5.1.11",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.5",
     "typescript": "5.9.3"

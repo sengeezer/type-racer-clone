@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { firebase } from "firedb";
+import { firebase, getFirebaseAuth, isFirebaseConfigured } from "firedb";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 
@@ -47,11 +47,16 @@ const Auth = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleGithubSignIn = async () => {
+    if (!isFirebaseConfigured) {
+      setError("Firebase environment variables are missing.");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
     try {
-      await firebase.auth().signInWithPopup(new firebase.auth.GithubAuthProvider());
+      await getFirebaseAuth().signInWithPopup(new firebase.auth.GithubAuthProvider());
       await router.push("/");
     } catch (signInError) {
       setError(
@@ -66,9 +71,16 @@ const Auth = () => {
     <Wrapper>
       <Title>Typeracer Login</Title>
       <Subtitle>Sign in with GitHub to start racing.</Subtitle>
-      <ActionButton type='button' onClick={handleGithubSignIn} disabled={isLoading}>
+      <ActionButton
+        type='button'
+        onClick={handleGithubSignIn}
+        disabled={isLoading || !isFirebaseConfigured}
+      >
         {isLoading ? "Signing in..." : "Continue with GitHub"}
       </ActionButton>
+      {!isFirebaseConfigured && (
+        <ErrorText>Firebase environment variables are missing.</ErrorText>
+      )}
       {error && <ErrorText>{error}</ErrorText>}
     </Wrapper>
   );
