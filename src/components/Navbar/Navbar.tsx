@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useAuth } from "context/Auth";
-import { loguot } from "firedb";
+import { logout } from "firedb";
 import { useRouter } from "next/router";
 import * as S from "./Navbar.style";
 
@@ -9,8 +9,8 @@ const Navbar = () => {
 
   const router = useRouter();
 
-  const handleLoguot = async () => {
-    await loguot();
+  const handleLogout = async () => {
+    await logout();
     router.push("/");
   };
 
@@ -32,7 +32,7 @@ const Navbar = () => {
             <Link href={`/profile/${user.displayName}`} passHref legacyBehavior>
               <S.AccountLink>Profile</S.AccountLink>
             </Link>
-            <S.ActionButton type='button' onClick={handleLoguot}>
+            <S.ActionButton type='button' onClick={handleLogout}>
               Logout
             </S.ActionButton>
           </S.Flex>

@@ -18,7 +18,7 @@ export const register = async ({ email, password, name }: RegisterProps) => {
   await auth.currentUser?.updateProfile({ displayName: name });
 };
 
-export const loguot = async () => await getFirebaseAuth().signOut();
+export const logout = async () => await getFirebaseAuth().signOut();
 
 // export const addStatsWps = async (userId: string, wps: number) => {
 //   const res =

@@ -7,7 +7,9 @@ import { addToStatsWPS, getStats } from "utils";
 
 import styled from "styled-components";
 
-const SONG_STALE_TIME_MS = 1000 * 60 * 3;
+const MILLISECONDS_PER_SECOND = 1000;
+const SECONDS_PER_MINUTE = 60;
+const SONG_STALE_TIME_MS = MILLISECONDS_PER_SECOND * SECONDS_PER_MINUTE * 3;
 
 const Container = styled.div`
   max-width: 80rem;
