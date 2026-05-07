@@ -1,24 +1,5 @@
-import {
-  createTheme,
-  ThemeProvider as MThemeProvider,
-} from "@material-ui/core/styles";
 import { ThemeProvider as SThemeProvider } from "styled-components";
-import { FC } from "react";
-
-const materialTheme = createTheme({
-  palette: {
-    common: {
-      black: "#19192B",
-      white: "#ffffff",
-    },
-    primary: {
-      light: "#B3E5FC",
-      main: "#03A9F4",
-      dark: "#0288D1",
-      contrastText: "#212121",
-    },
-  },
-});
+import type { PropsWithChildren } from "react";
 
 const styledTheme = {
   breakpoints: {
@@ -29,10 +10,6 @@ const styledTheme = {
   },
 };
 
-export const MainThemeProvider: FC = ({ children }) => {
-  return (
-    <MThemeProvider theme={materialTheme}>
-      <SThemeProvider theme={styledTheme}> {children} </SThemeProvider>
-    </MThemeProvider>
-  );
-};
+export const MainThemeProvider = ({ children }: PropsWithChildren) => (
+  <SThemeProvider theme={styledTheme}>{children}</SThemeProvider>
+);

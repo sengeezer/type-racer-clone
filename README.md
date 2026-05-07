@@ -37,11 +37,10 @@ Also in project:
 
 ### Versions
 
-``` 
-"next": "11.0.1",
-"react": "17.0.2",
+```
+"next": "16.2.5",
+"react": "19.2.6",
 "firebase": "^8.8.0",
-"typescript": "4.3.5",
-"@material-ui/core": "^4.12.2",
+"typescript": "5.9.3",
 "styled-components": "^5.3.0"
 ```

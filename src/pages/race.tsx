@@ -1,6 +1,5 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getSong } from "api";
-import { Grid, Typography } from "@material-ui/core";
 import { RaceGame, Stats } from "components";
 import { SongData } from "types";
 import { useAuth } from "context/Auth";
@@ -18,36 +17,43 @@ const Container = styled.div`
   padding: 0 10px;
 `;
 
+const Content = styled.div`
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 const Race = () => {
-  // prettier-ignore
-  const {data, isLoading, error, refetch} = useQuery<SongData, Error>("song", getSong, {staleTime: 1000 * 60 * 3 /* 3 minutes */});
+  const { data, isLoading, error, refetch } = useQuery<SongData, Error>({
+    queryKey: ["song"],
+    queryFn: getSong,
+    staleTime: 1000 * 60 * 3,
+  });
   const { user } = useAuth();
 
-  const { data: stats, refetch: statsRefetch } = useQuery<number[]>(
-    ["stats", user],
-    () => getStats(user)
-  );
+  const { data: stats, refetch: statsRefetch } = useQuery<number[]>({
+    queryKey: ["stats", user?.uid ?? "anonymous"],
+    queryFn: () => getStats(user),
+  });
 
   if (isLoading) return <div className=''>loading...</div>;
   if (error || !data) return <div className=''>{error?.message}</div>;
 
   return (
     <Container>
-      <Grid container spacing={3}>
-        <Grid item sm={12} md={8}>
-          <RaceGame
-            data={data}
-            refetch={refetch}
-            addStats={(wps: number) => addToStatsWPS(user, wps)}
-            statsRefetch={statsRefetch}
-          />
+      <Content>
+        <div>
+          <RaceGame data={data} refetch={refetch} addStats={wps => addToStatsWPS(user, wps)} statsRefetch={statsRefetch} />
           <button onClick={() => statsRefetch()}>refetch</button>
-        </Grid>
-
-        <Grid item sm={12} md={4}>
+        </div>
+        <div>
           <Stats stats={stats} />
-        </Grid>
-      </Grid>
+        </div>
+      </Content>
     </Container>
   );
 };

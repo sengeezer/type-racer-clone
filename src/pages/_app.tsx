@@ -1,11 +1,9 @@
 import Head from "next/head";
-import { Router } from "next/dist/client/router";
-import { useEffect } from "react";
+import { Router } from "next/router";
 import { AnimatePresence } from "framer-motion";
-import { CssBaseline } from "@material-ui/core";
 import { AuthProvider } from "context/Auth";
 import { Navbar } from "components";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import nProgress from "nprogress";
 import "styles/globals.css";
 import "nprogress/nprogress.css";
@@ -18,14 +16,7 @@ Router.events.on("routeChangeError", () => nProgress.done());
 
 const client = new QueryClient();
 
-function MyApp({ Component, pageProps, router }: AppProps) {
-  useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector("#jss-server-side");
-    if (jssStyles) {
-      jssStyles?.parentElement?.removeChild(jssStyles);
-    }
-  }, []);
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -37,9 +28,8 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       <QueryClientProvider client={client}>
         <AuthProvider>
           <MainThemeProvider>
-            <CssBaseline />
             <Navbar />
-            <AnimatePresence exitBeforeEnter>
+            <AnimatePresence mode='wait'>
               <Component {...pageProps} />
             </AnimatePresence>
           </MainThemeProvider>

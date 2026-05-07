@@ -22,3 +22,21 @@ export const Road = styled.div`
     right: 0;
   }
 `;
+
+export const ActionButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: #d83532;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+`;
+
+export const Timer = styled.h2`
+  margin: 1rem 0;
+`;

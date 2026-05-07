@@ -1,4 +1,5 @@
-import { createContext, FC, useContext } from "react";
+import { createContext, useContext } from "react";
+import type { PropsWithChildren } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebase } from "firedb";
 
@@ -10,7 +11,7 @@ interface AuthValues {
 
 const AuthContext = createContext<AuthValues>({} as AuthValues);
 
-export const AuthProvider: FC = ({ children }) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, isLoading, error] = useAuthState(firebase.auth());
 
   return (

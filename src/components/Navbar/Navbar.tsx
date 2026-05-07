@@ -1,13 +1,11 @@
 import Link from "next/link";
-import { AppBar, Button, IconButton, Typography } from "@material-ui/core";
-import { AccountCircle, Menu as MenuIcon } from "@material-ui/icons";
 import { useAuth } from "context/Auth";
 import { loguot } from "firedb";
 import { useRouter } from "next/router";
 import * as S from "./Navbar.style";
 
 const Navbar = () => {
-  const { user, isLoading, error } = useAuth();
+  const { user, isLoading } = useAuth();
 
   const router = useRouter();
 
@@ -17,41 +15,30 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position='static'>
+    <S.Bar>
       <S.Toolbar>
-        <IconButton edge='start' color='inherit' aria-label='menu'>
-          <MenuIcon />
-        </IconButton>
+        <S.GhostButton type='button' aria-label='menu'>
+          ☰
+        </S.GhostButton>
         {isLoading && <div>load...</div>}
         {!user && !isLoading && (
-          <Button variant='contained'>
-            <Link href='/auth'>Sing in</Link>
-          </Button>
+          <Link href='/auth' passHref legacyBehavior>
+            <S.ButtonLink>Sing in</S.ButtonLink>
+          </Link>
         )}
         {!!user && !isLoading && (
           <S.Flex>
-            <Typography variant='h6'>{user.displayName}</Typography>
-            <IconButton
-              aria-label='account of current user'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
-              color='inherit'
-            >
-              <Link href={`/profile/${user.displayName}`} passHref>
-                <AccountCircle />
-              </Link>
-            </IconButton>
-            <Button
-              variant='contained'
-              color='secondary'
-              onClick={handleLoguot}
-            >
+            <S.UserName>{user.displayName}</S.UserName>
+            <Link href={`/profile/${user.displayName}`} passHref legacyBehavior>
+              <S.AccountLink>Profile</S.AccountLink>
+            </Link>
+            <S.ActionButton type='button' onClick={handleLoguot}>
               Logout
-            </Button>
+            </S.ActionButton>
           </S.Flex>
         )}
       </S.Toolbar>
-    </AppBar>
+    </S.Bar>
   );
 };
 
