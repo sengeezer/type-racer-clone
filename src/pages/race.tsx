@@ -40,7 +40,7 @@ const Race = () => {
   const { user } = useAuth();
 
   const { data: stats, refetch: statsRefetch } = useQuery<number[]>({
-    queryKey: user ? ["stats", user.uid] : ["stats"],
+    queryKey: ["stats", user?.uid ?? null],
     queryFn: () => getStats(user),
     enabled: Boolean(user),
   });

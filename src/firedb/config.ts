@@ -19,10 +19,10 @@ const requiredFirebaseConfig = [
   firebaseConfig.appId,
 ];
 
-const hasRealConfigValue = (value: string | undefined) =>
+const isValidConfigValue = (value: string | undefined) =>
   Boolean(value && !value.startsWith("<YOUR_"));
 
-export const isFirebaseConfigured = requiredFirebaseConfig.every(hasRealConfigValue);
+export const isFirebaseConfigured = requiredFirebaseConfig.every(isValidConfigValue);
 
 export const getFirebaseApp = () => {
   if (!isFirebaseConfigured) {
