@@ -40,10 +40,9 @@ const Race = () => {
   const { user } = useAuth();
 
   const { data: stats, refetch: statsRefetch } = useQuery<number[]>({
-    queryKey: ["stats", user?.uid],
+    queryKey: user ? ["stats", user.uid] : ["stats"],
     queryFn: () => getStats(user),
     enabled: Boolean(user),
-    initialData: [],
   });
 
   if (isLoading) return <div className=''>loading...</div>;
