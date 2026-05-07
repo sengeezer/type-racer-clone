@@ -99,12 +99,12 @@ const RaceGame: FC<ReactGameProps> = ({
       <p style={{ marginLeft: progress + "%" }}>Car</p>
       <S.Road />
 
-        <RaceText
-          allWords={allWords}
-          curIdx={currentIndex}
-          currentUserWord={currentUserWord}
-          handleChangeError={handleChangeError}
-        />
+      <RaceText
+        allWords={allWords}
+        curIdx={currentIndex}
+        currentUserWord={currentUserWord}
+        handleChangeError={handleChangeError}
+      />
 
       <S.Input
         ref={mainInput}
